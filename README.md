@@ -1,11 +1,39 @@
-# [Django AdminLTE](https://appseed.us/product/adminlte/django/)
+# Dynamic charts for Django
 
-Open-source **Django** project crafted on top of **[AdminLTE](https://appseed.us/product/adminlte/django/)**, an open-source and iconic `Bootstrap` design.
-The product is designed to deliver the best possible user experience with highly customizable feature-rich pages. 
+The project needs to provide a way to chart data using a minimal inoput from the user. Library will manages the charts in two ways:
 
-- 👉 [Django AdminLTE](https://appseed.us/product/adminlte/django/) - `Product page`
-- 👉 [Django AdminLTE](https://adminlte-django.appseed-srv1.com/) - `LIVE Demo`
-- ✅ [Django AdminLTE](https://www.youtube.com/watch?v=efLwn5dC7Qo) - `Video Presentation`
+The input is basically any Model defined in any application. For initial tests, we will use one defined a simple `Sales` model:
+
+```python
+class Sales(models.Model):
+    id            = models.AutoField(primary_key=True)
+    product       = models.CharField(max_length = 100) # name: Nike AIR, PUMA 
+    price         = models.IntegerField()              # 99
+    fee           = models.IntegerField()              # 5
+    currency      = models.CharField(max_length = 3)   # usd, eur, chn
+    country       = models.CharField(max_length = 100) # usa, ch, ro
+    purchase_date = models.IntegerField()              # Unix Timestamp 
+```
+
+The information is extracted using Charts.JS (CDN import) and presented to the user in two ways: 
+
+> **(1)** Via a route 
+
+The syntax is this: `localhost:8000/dyn-chart/MODEL/CHART_TYPE/COL_1/COL_2/COL3/`
+
+- 1.1 **PIE Chart**: `localhost:8000/dyn-chart/sales/pie/country/report_start/`
+  - INPUTS (for PIE) 
+    - COL_1: mandatory
+    - COL_2: optional: number of days to report: 10, 20, 
+      - if not provided or negative, the report use ALL time data 
+  - Samples:
+    - `localhost:8000/dyn-chart/sales/pie/country/20/` - PIE chart for Country sales, in the last 20 days
+    - `localhost:8000/dyn-chart/sales/pie/country/` - PIE chart for Country sales, ALL time report 
+    - `localhost:8000/dyn-chart/sales/pie/currency/5/` - PIE chart for Currencies in the last 5 days 
+    
+> **(2)** Widget Mode 
+
+@Todo 
 
 <br />
 
