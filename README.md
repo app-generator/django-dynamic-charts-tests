@@ -17,7 +17,9 @@ class Sales(models.Model):
 
 The information is extracted using Charts.JS (CDN import) and presented to the user in two ways: 
 
-> **(1)** Via a route 
+<br />
+
+> 👉 **(1)** Via a route 
 
 The syntax is this: `localhost:8000/dyn-chart/MODEL/CHART_TYPE/COL_1/COL_2/COL3/`
 
@@ -31,7 +33,9 @@ The syntax is this: `localhost:8000/dyn-chart/MODEL/CHART_TYPE/COL_1/COL_2/COL3/
     - `localhost:8000/dyn-chart/sales/pie/country/` - PIE chart for Country sales, ALL time report 
     - `localhost:8000/dyn-chart/sales/pie/currency/5/` - PIE chart for Currencies in the last 5 days 
     
-> **(2)** Widget Mode 
+<br />
+
+> 👉 **(2)** Widget Mode 
 
 @Todo 
 
