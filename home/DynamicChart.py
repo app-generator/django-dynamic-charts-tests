@@ -33,8 +33,7 @@ class DynamicChart(views.View):
             if report_start is None:
                 self.data = list(self.model_class.objects.values_list(column_name, flat=True))
             else:
-                self.data = list(
-                    self.model_class.objects.order_by("-id")[:10][::-1].values_list(column_name, flat=True))
+                self.data = self.model_class.objects.order_by("-id").values_list(column_name, flat=True)[:10][::-1]
 
             return True
         return False
@@ -46,7 +45,7 @@ class DynamicChart(views.View):
             context['data'] = self.data
             print(context)
             print("___________")
-            return render(request, "pages/index.html", context=context)
+            return HttpResponse(request,  context)
         else:
             return HttpResponse(json.dumps({
                 'message': f"{self.chart_type} charts are not supported.",
