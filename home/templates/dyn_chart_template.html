@@ -12,39 +12,39 @@
 
 <body>
 
-    {% if successful %}
+{% if successful %}
     {#handle charts#}
-    {#objects available : label, data, chart_type#}
+    {#objects available : labels, data, chart_type#}
     <!-- <h3>data</h3> -->
     <!-- <h3>{{ chart_type }}</h3> -->
     <!-- <h3>{{ label }}</h3> -->
     <!-- <h3>{{ data }}</h3> -->
 
-    {% else %}
+{% else %}
     <h3>
         error: {{ message }}
     </h3>
-    {% endif %}
-    <div>
-        <canvas id="chart"></canvas>
-    </div>
-    <script defer type="module">
-        const data = [
-            {% for item in data %}
-        '{{ item }}',
-            {% endfor %}
-            ];
+{% endif %}
+<div>
+    <canvas id="chart"></canvas>
+</div>
+<script defer type="module">
+    const data = [
+        {% for item in data %}
+            '{{ item }}',
+        {% endfor %}
+    ];
 
-        new Chart(document.getElementById('chart'), {
-            type: 'pie',
-            data: {
-                labels: [1, 2, 3],
-                datasets: [
-                    { data: [3, 2, 21] }
-                ]
-            }
-        }) 
-    </script>
+    new Chart(document.getElementById('chart'), {
+        type: 'pie',
+        data: {
+            labels: [1, 2, 3],
+            datasets: [
+                {data: [3, 2, 21]}
+            ]
+        }
+    })
+</script>
 
 </body>
 

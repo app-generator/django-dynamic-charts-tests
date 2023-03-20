@@ -29,6 +29,7 @@ class DynamicChart(views.View):
             context['label'] = column_name
             if report_start is None:
                 data = list(self.model_class.objects.values_list(column_name, flat=True))
+                labels = list(self.model_class.objects.values_list('id', flat=True))
             else:
                 try:
                     report_start = int(report_start)
@@ -39,9 +40,11 @@ class DynamicChart(views.View):
                     }), 400
                 data = self.model_class.objects.order_by("-id").values_list(column_name, flat=True)[:report_start][
                        ::-1]
+                labels = self.model_class.objects.order_by("-id").values_list('id', flat=True)[:report_start][
+                       ::-1]
             context['successful'] = True
             context['data'] = data
-            print(context)
+            context['labels'] = labels
             return loader.render_to_string(template_name="dyn_chart_template.html", context=context), 200
         return loader.render_to_string(template_name="dyn_chart_template.html", context={
             'message': f"'{column_name}' is not a {self.model_name}'s attribute.",
