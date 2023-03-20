@@ -21,7 +21,7 @@ class DynamicChart(views.View):
         if column_name in columns_names:
             context['label'] = column_name
             if report_start is None:
-                data, labels = get_column_count(model=self.model_class, column_name=column_name)
+                labels, data = get_column_count(model=self.model_class, column_name=column_name)
             else:
                 try:
                     report_start = int(report_start)
@@ -33,7 +33,7 @@ class DynamicChart(views.View):
                     return render_error(template_name="dyn_chart_template.html", message=
                     f"The last argument in the url must be a positive integer but you provided '{report_start}'",
                                         status=400)
-                data, labels = get_column_count(model=self.model_class, column_name=column_name,
+                labels, data = get_column_count(model=self.model_class, column_name=column_name,
                                                 report_start=report_start)
             context['successful'] = True
             context['data'] = data
