@@ -37,7 +37,7 @@
             {% endfor %}
     ];
         const x_axis = [
-            {% for item in x_axis %}
+            {% for item in labels %}
         '{{ item }}',
             {% endfor %}
     ];
@@ -48,7 +48,7 @@
         };
         const datax = type === 'pie' ? y_axis : x_axis;
         new Chart(document.getElementById('chart'), {
-            type: 'pie',
+            type,
             data: {
                 x_axis,
                 datasets: [
