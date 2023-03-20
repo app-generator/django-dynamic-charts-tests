@@ -22,22 +22,21 @@ class DynamicChart(views.View):
         self.model_class: django.db.models.Manager = find_model_class_by_path(model_class_path)
         self.model_name = self.model_class_path.split('.')[-1]
 
-    def pie_render(self, column_name, report_start):
+    def pie_render(self, column_name, report_start=None):
         context = {'chart_type': "pie"}
         columns_names = [f.name for f in self.model_class._meta.get_fields()]
-        try:
-            report_start = int(report_start)
-        except ValueError:
-            return loader.render_to_string(template_name="dyn_chart_template.html", context={
-                'message': f"{report_start} must be an integer number.",
-                'successful': False,
-            }), 400
-
         if column_name in columns_names:
             context['label'] = column_name
             if report_start is None:
                 data = list(self.model_class.objects.values_list(column_name, flat=True))
             else:
+                try:
+                    report_start = int(report_start)
+                except ValueError:
+                    return loader.render_to_string(template_name="dyn_chart_template.html", context={
+                        'message': f"The last argument in the url must be integer but you provided '{report_start}'",
+                        'successful': False,
+                    }), 400
                 data = self.model_class.objects.order_by("-id").values_list(column_name, flat=True)[:report_start][
                        ::-1]
             context['successful'] = True
@@ -45,6 +44,6 @@ class DynamicChart(views.View):
             print(context)
             return loader.render_to_string(template_name="dyn_chart_template.html", context=context), 200
         return loader.render_to_string(template_name="dyn_chart_template.html", context={
-            'message': f"{column_name} is not a {self.model_name}'s attribute.",
+            'message': f"'{column_name}' is not a {self.model_name}'s attribute.",
             'successful': False,
         }), 400
