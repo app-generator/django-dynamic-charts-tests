@@ -1,8 +1,9 @@
 import importlib
 from datetime import datetime
-
+from typing import Tuple
 import django.db.models
 from django.db.models import Count
+from django.template import loader
 
 
 def find_model_class_by_path(model_class_path: str) -> django.db.models.Manager:
@@ -22,7 +23,7 @@ def get_timestamp_n_days_before(days: int) -> float:
 
 
 def get_column_count(model: django.db.models.Manager, column_name: str, report_start: int = -1
-                     ) -> (list, list):
+                     ) -> Tuple[list, list]:
     if report_start != -1:
         start_timestamp = get_timestamp_n_days_before(report_start)
         result = (model.objects
@@ -41,3 +42,14 @@ def get_column_count(model: django.db.models.Manager, column_name: str, report_s
         column_values.append(dictionary[column_name])
         counts.append(dictionary[column_name])
     return column_values, counts
+
+
+def render_error(template_name: str, message: str, status: int) -> tuple[str, int]:
+    return loader.render_to_string(template_name=template_name, context={
+        'message': message,
+        'successful': False,
+    }), status
+
+
+def render_page(template_name: str, context: dict) -> tuple[str, int]:
+    return loader.render_to_string(template_name=template_name, context=context), 200
