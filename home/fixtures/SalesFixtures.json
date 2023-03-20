@@ -1,0 +1,50 @@
+[
+  {
+    "model": "home.Sales",
+    "pk": 1,
+    "fields": {
+      "product": "a",
+      "price": "100",
+      "fee": "310",
+      "currency": "dollar",
+      "country": "united states",
+      "purchase_date": 1679320000
+    }
+  },
+  {
+    "model": "home.Sales",
+    "pk": 2,
+    "fields": {
+      "product": "q",
+      "price": 1032,
+      "fee": 3210,
+      "currency": "euro",
+      "country": "united kingdom",
+      "purchase_date": 1679300000
+    }
+  },
+  {
+    "model": "home.Sales",
+    "pk": 3,
+    "fields": {
+      "product": "bn",
+      "price": 32410,
+      "fee": 301,
+      "currency": "rial",
+      "country": "Iran",
+      "purchase_date": 1679320443
+    }
+  },
+  {
+    "model": "home.Sales",
+    "pk": 4,
+    "fields": {
+      "product": "hh",
+      "price": 1380,
+      "fee": 370,
+      "currency": "dinar",
+      "country": "kuwait",
+      "purchase_date": 1679324322
+    }
+  }
+]

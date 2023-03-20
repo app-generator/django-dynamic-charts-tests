@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="
+    https://cdn.jsdelivr.net/npm/chart.js@4.2.1/dist/chart.umd.min.js
+    "></script>
+
+</head>
+
+<body>
+
+    {% if successful %}
+    {#handle charts#}
+    {#objects available : labels, data, chart_type#}
+    <!-- <h3>data</h3> -->
+    <!-- <h3>{{ chart_type }}</h3> -->
+    <!-- <h3>{{ label }}</h3> -->
+    <!-- <h3>{{ data }}</h3> -->
+
+    {% else %}
+    <h3>
+        error: {{ message }}
+    </h3>
+    {% endif %}
+    <div>
+        <div>
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+    <script defer type="module">
+        const y_axis = [
+            {% for item in data %}
+        '{{ item }}',
+            {% endfor %}
+    ];
+        const x_axis = [
+            {% for item in labels %}
+        '{{ item }}',
+            {% endfor %}
+    ];
+        const type = '{{ chart_type }}';
+        const label = '{{label}}';
+        const inverted = {};
+        for (let j = 0; j < x_axis.length; j++) {
+            inverted[x_axis[j]] = y_axis[j];
+        };
+        console.log(y_axis)
+        console.log(x_axis)
+        console.log(inverted)
+        const datax = type === 'pie' ? y_axis : x_axis;
+        new Chart(document.getElementById('chart'), {
+            type: 'pie',
+            data: {
+                labels: Object.keys(inverted),
+                datasets: [
+                    { data: Object.values(inverted), label }
+                ]
+            },
+
+        })
+    </script>
+
+</body>
+
+</html>
