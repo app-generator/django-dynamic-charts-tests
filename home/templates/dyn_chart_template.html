@@ -41,37 +41,25 @@
         '{{ item }}',
             {% endfor %}
     ];
-        const type = '{{ chart_type }}'
+        const type = '{{ chart_type }}';
+        const label = '{{label}}';
         const inverted = {};
         for (let j = 0; j < x_axis.length; j++) {
             inverted[x_axis[j]] = y_axis[j];
         };
+        console.log(y_axis)
+        console.log(x_axis)
+        console.log(inverted)
         const datax = type === 'pie' ? y_axis : x_axis;
         new Chart(document.getElementById('chart'), {
-            type,
+            type: 'pie',
             data: {
-                x_axis,
+                labels: Object.keys(inverted),
                 datasets: [
-                    { data: datax, label: '{{ label }}' }
+                    { data: Object.values(inverted), label }
                 ]
             },
-            options: {
-                scales: {
-                    y: {
-                        ticks: {
-                            callback: function (value, index, ticks) {
-                                return inverted[value];
-                            }
-                        }
-                    }
-                },
-                plugins: {
-                    legend: {
-                        display: false
-                    },
-                },
 
-            }
         })
     </script>
 
