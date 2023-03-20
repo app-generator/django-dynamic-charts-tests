@@ -39,7 +39,7 @@ def get_column_count(model: django.db.models.Manager, column_name: str, report_s
     counts = []
     for dictionary in result:
         column_values.append(dictionary[column_name])
-        counts.append(dictionary[column_name])
+        counts.append(dictionary['count'])
     return column_values, counts
 
 
