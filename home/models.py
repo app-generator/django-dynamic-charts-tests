@@ -10,3 +10,4 @@ class Sales(models.Model):
     fee = models.IntegerField()  # 5
     currency = models.CharField(max_length=3)  # usd, eur, chn
     country = models.CharField(max_length=100)  # usa, ch, ro
+    purchase_date = models.IntegerField()    # Unix timestamp

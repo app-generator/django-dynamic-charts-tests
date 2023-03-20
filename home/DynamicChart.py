@@ -1,14 +1,10 @@
-import json
-
-from django.http import HttpResponse, request
-from django.shortcuts import render
+from django.db.models import Count
 from django.template import loader
 
-from home.helpers import find_model_class_by_path
+from home.helpers import find_model_class_by_path, get_timestamp_n_days_before, get_column_count
 
 import django.db.models
 from django import views
-from pathlib import Path
 
 
 class DynamicChart(views.View):
@@ -28,20 +24,22 @@ class DynamicChart(views.View):
         if column_name in columns_names:
             context['label'] = column_name
             if report_start is None:
-                data = list(self.model_class.objects.values_list(column_name, flat=True))
-                labels = list(self.model_class.objects.values_list('id', flat=True))
+                data, labels = get_column_count(model=self.model_class, column_name=column_name)
             else:
                 try:
                     report_start = int(report_start)
                 except ValueError:
                     return loader.render_to_string(template_name="dyn_chart_template.html", context={
-                        'message': f"The last argument in the url must be integer but you provided '{report_start}'",
+                        'message': f"The last argument in the url must be an integer but you provided '{report_start}'",
                         'successful': False,
                     }), 400
-                data = self.model_class.objects.order_by("-id").values_list(column_name, flat=True)[:report_start][
-                       ::-1]
-                labels = self.model_class.objects.order_by("-id").values_list('id', flat=True)[:report_start][
-                       ::-1]
+                if report_start < 0:
+                    return loader.render_to_string(template_name="dyn_chart_template.html", context={
+                        'message': f"The last argument in the url must be a positive integer but you provided '{report_start}'",
+                        'successful': False,
+                    }), 400
+                data, labels = get_column_count(model=self.model_class, column_name=column_name,
+                                                report_start=report_start)
             context['successful'] = True
             context['data'] = data
             context['labels'] = labels

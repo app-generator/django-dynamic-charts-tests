@@ -19,7 +19,7 @@ def index(request):
 
 
 def dyn_chart(request, model_name, chart_type, col_1, col_2=None, col_3=None):
-    chart = DynamicChart("home.models." + model_name)
+    chart = DynamicChart(model_class_path="home.models." + model_name)
     if chart_type == "pie":
         content, status = chart.pie_render(column_name=col_1, report_start=col_2)
         return HttpResponse(content=content, status=status)
