@@ -12,7 +12,7 @@
 
 <body>
 
-{% if successful %}
+    {% if successful %}
     {#handle charts#}
     {#objects available : labels, data, chart_type#}
     <!-- <h3>data</h3> -->
@@ -20,31 +20,60 @@
     <!-- <h3>{{ label }}</h3> -->
     <!-- <h3>{{ data }}</h3> -->
 
-{% else %}
+    {% else %}
     <h3>
         error: {{ message }}
     </h3>
-{% endif %}
-<div>
-    <canvas id="chart"></canvas>
-</div>
-<script defer type="module">
-    const data = [
-        {% for item in data %}
-            '{{ item }}',
-        {% endfor %}
+    {% endif %}
+    <div>
+        <div>
+            <canvas id="chart"></canvas>
+        </div>
+    </div>
+    <script defer type="module">
+        const y_axis = [
+            {% for item in data %}
+        '{{ item }}',
+            {% endfor %}
     ];
+        const x_axis = [
+            {% for item in x_axis %}
+        '{{ item }}',
+            {% endfor %}
+    ];
+        const type = '{{ chart_type }}'
+        const inverted = {};
+        for (let j = 0; j < x_axis.length; j++) {
+            inverted[x_axis[j]] = y_axis[j];
+        };
+        const datax = type === 'pie' ? y_axis : x_axis;
+        new Chart(document.getElementById('chart'), {
+            type: 'pie',
+            data: {
+                x_axis,
+                datasets: [
+                    { data: datax, label: '{{ label }}' }
+                ]
+            },
+            options: {
+                scales: {
+                    y: {
+                        ticks: {
+                            callback: function (value, index, ticks) {
+                                return inverted[value];
+                            }
+                        }
+                    }
+                },
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                },
 
-    new Chart(document.getElementById('chart'), {
-        type: 'pie',
-        data: {
-            labels: [1, 2, 3],
-            datasets: [
-                {data: [3, 2, 21]}
-            ]
-        }
-    })
-</script>
+            }
+        })
+    </script>
 
 </body>
 
